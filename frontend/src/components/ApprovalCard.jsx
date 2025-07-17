@@ -1,4 +1,9 @@
-import React from "react";
+import {
+    FilePenLine,
+    Trash2,
+    CalendarCheck,
+    MessageSquareText,
+} from "lucide-react";
 
 export default function ApprovalCard({ item, onOpen }) {
     const { itemType, submittedAt, status, comment, escalated } = item;
@@ -36,17 +41,17 @@ export default function ApprovalCard({ item, onOpen }) {
                     View Details
                 </button>
             </div>
-            <p className="text-gray-800 font-medium text-xs mt-2">
-                📅 Submitted: {new Date(submittedAt).toLocaleDateString()}
+            <p className="flex items-center gap-1 text-gray-800 font-medium text-xs mt-2">
+                <CalendarCheck size={16} /> Submitted: {new Date(submittedAt).toLocaleDateString()}
             </p>
 
-            <p className="text-xs text-gray-500 mt-1">
-                💬 Admin Comment: <span className="italic">{comment}</span>
+            <p className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                <MessageSquareText size={16} /> Admin Comment: <span className="italic">{comment}</span>
             </p>
 
             {escalated && (
                 <span className="inline-block bg-yellow-100 text-yellow-800 px-2 py-0.5 text-xs rounded mt-2">
-                    ⏫ Escalated
+                    Escalated
                 </span>
             )}
         </div>

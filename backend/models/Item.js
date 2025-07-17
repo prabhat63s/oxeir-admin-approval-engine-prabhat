@@ -11,8 +11,6 @@ const itemSchema = new mongoose.Schema({
         required: true
     },
     description: String,
-    company: String,      // optional: used only in jobs
-    location: String,     // optional: used only in jobs
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

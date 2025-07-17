@@ -29,11 +29,24 @@ export const takeAction = async (req, res) => {
             : 'Your submission was rejected';
 
         const html = `
-      <p>Hello ${submitter.name},</p>
-      <p>Your <strong>${itemType.toLowerCase()}</strong> submission has been <strong>${approval.status}</strong>.</p>
-      <p><strong>Comment:</strong> ${comment || 'No additional comments.'}</p>
-      <p>Thanks,<br/>Admin Team</p>
-    `;
+  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
+    <h2 style="color: ${action === 'approve' ? '#2e7d32' : '#c62828'};">Submission ${approval.status.charAt(0).toUpperCase() + approval.status.slice(1)}</h2>
+    <p>Dear <strong>${submitter.name}</strong>,</p>
+    <p>Your <strong>${itemType.toLowerCase()}</strong> submission has been <strong>${approval.status}</strong> by the admin team.</p>
+    
+    <div style="background: #fff; padding: 15px; margin: 20px 0; border-left: 4px solid ${action === 'approve' ? '#4caf50' : '#f44336'};">
+      <p style="margin: 0;"><strong>Review Comment:</strong></p>
+      <p style="margin: 0; color: #555;">${comment || 'No additional comments provided.'}</p>
+    </div>
+
+    <p>If you have any questions, feel free to reach out to us.</p>
+
+    <p style="margin-top: 30px;">Best regards,<br/><strong>Admin Approval Team</strong></p>
+    <hr style="border-top: 1px dashed #ccc; margin-top: 30px;" />
+    <p style="font-size: 12px; color: #999;">This is an automated message, please do not reply directly to this email.</p>
+  </div>
+`;
+
 
         await sendEmail({ to: submitter.email, subject, html });
 
@@ -71,12 +84,11 @@ export const getApprovalsByType = async (req, res) => {
 
     const items = await ApprovalQueue.find(query)
         .populate('submittedBy', 'name email')
+        .populate('itemId', 'title description')
         .sort({ submittedAt: -1 });
 
     res.status(200).json(items);
 };
-
-
 
 
 export const getApprovalStats = async (req, res) => {

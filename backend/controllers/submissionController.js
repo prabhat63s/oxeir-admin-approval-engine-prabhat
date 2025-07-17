@@ -9,8 +9,6 @@ export const submitItem = async (req, res) => {
             type,
             title,
             description,
-            company,
-            location,
             createdBy: req.user.id
         });
 

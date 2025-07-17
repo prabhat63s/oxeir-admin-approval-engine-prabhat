@@ -1,6 +1,6 @@
 # Admin Approval Engine 🚦  
 **Project Repository:** `oxeir-admin-approval-engine-prabhat`  
-**Live Preview:** [https://admin-approval-engine.vercel.app](https://admin-approval-engine.vercel.app)
+**Live Preview:** [https://oxeir-admin-approval-engine-prabhat.vercel.app/login](https://oxeir-admin-approval-engine-prabhat.vercel.app/login)
 
 ## 🔍 Overview
 The **Admin Approval Engine** is a robust moderation system built to streamline content approval workflows for platforms hosting user-submitted Jobs, Courses, Webinars, and Projects. Designed for **superadmins and admins**, this system helps enforce quality control, platform credibility, and compliance with standards.
@@ -29,7 +29,7 @@ The **Admin Approval Engine** is a robust moderation system built to streamline 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/oxeir-admin-approval-engine-prabhat.git
+git clone https://github.com/prabhat63s/oxeir-admin-approval-engine-prabhat.git
 cd oxeir-admin-approval-engine-prabhat
 ```
 
@@ -161,7 +161,7 @@ oxeir-admin-approval-engine-prabhat/
 │   ├── routes/
 │   │   └── PrivateRoute.jsx
 │   └── utils/
-│
+│       └── validators.jsx 
 └── README.md
 ```
 

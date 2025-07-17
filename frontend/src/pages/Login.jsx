@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, Loader2, EyeOff, Eye } from 'lucide-react';
+import { isValidEmail, isValidPassword } from '../utlis/validators';
+
 
 export default function Login() {
     const { auth, login } = useAuth();
@@ -11,10 +13,12 @@ export default function Login() {
 
     const [form, setForm] = useState({
         email: 'superadmin@example.com',
-        password: 'superadmin123'
+        password: 'Superadmin@12'
     });
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [errors, setErrors] = useState({ email: "", password: "" });
+
 
     // Redirect if already logged in
     useEffect(() => {
@@ -29,11 +33,33 @@ export default function Login() {
     }, [auth, navigate]);
 
 
-    const handleChange = (e) =>
+    const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+
+        // Clear error on user input
+        setErrors({ ...errors, [e.target.name]: "" });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let tempErrors = { email: "", password: "" };
+        let valid = true;
+
+        if (!isValidEmail(form.email)) {
+            tempErrors.email = "Invalid email format";
+            valid = false;
+        }
+
+        if (!isValidPassword(form.password)) {
+            tempErrors.password =
+                "Password must have min 6 chars, 1 uppercase, 1 lowercase, 1 number & 1 special char";
+            valid = false;
+        }
+
+        setErrors(tempErrors);
+        if (!valid) return;
+
         setLoading(true);
         try {
             const res = await axios.post('/auth/login', form);
@@ -66,7 +92,7 @@ export default function Login() {
                 </p>
 
                 {/* Email Field */}
-                <div className="relative mb-6">
+                <div className="relative mb-2">
                     <Mail className="absolute left-3 top-3.5 text-gray-400" size={20} />
                     <input
                         type="email"
@@ -75,12 +101,17 @@ export default function Login() {
                         value={form.email}
                         onChange={handleChange}
                         required
-                        className="pl-10 pr-4 py-3 w-full text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        className={`pl-10 pr-4 py-3 w-full text-sm border rounded-lg focus:ring-2 focus:outline-none ${errors.email ? 'border-red-500 focus:ring-red-300' : 'focus:ring-indigo-500'
+                            }`}
                     />
+                    {errors.email && (
+                        <p className="text-xs text-red-600 mt-1 ml-1">{errors.email}</p>
+                    )}
                 </div>
 
+
                 {/* Password Field */}
-                <div className="relative mb-8">
+                <div className="relative mb-2">
                     <Lock className="absolute left-3 top-3.5 text-gray-400" size={20} />
                     <input
                         type={showPassword ? "text" : "password"}
@@ -89,7 +120,8 @@ export default function Login() {
                         value={form.password}
                         onChange={handleChange}
                         required
-                        className="pl-10 pr-4 py-3 w-full text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        className={`pl-10 pr-10 py-3 w-full text-sm border rounded-lg focus:ring-2 focus:outline-none ${errors.password ? 'border-red-500 focus:ring-red-300' : 'focus:ring-indigo-500'
+                            }`}
                     />
                     <button
                         type="button"
@@ -99,7 +131,11 @@ export default function Login() {
                     >
                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
+                    {errors.password && (
+                        <p className="text-xs text-red-600 mt-1 ml-1">{errors.password}</p>
+                    )}
                 </div>
+
 
                 {/* Submit Button */}
                 <button
